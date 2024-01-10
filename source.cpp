@@ -1,4 +1,5 @@
 #include <iostream>
+#include<bits/stdc++.h>
 #include <fstream>
 #include <vector>
 using namespace std;
@@ -17,8 +18,8 @@ public:
     void createStudentRecord();
     void displayAllStudents();
     void displaySpecificStudent();
-    // void modifyStudentRecord();
-    // void deleteStudentRecord();
+     void modifyStudentRecord();
+     void deleteStudentRecord();
 };
 
 void lib::createStudentRecord(){
@@ -37,7 +38,7 @@ void lib::displayAllStudents() {
     cout<< "List of Students:"<<endl;
     cout<<"ID\tName\n";
 
-    for( auto s : students) {
+    for(auto s: students) {
         cout<<s.studentId<<"\t" <<s.studentName <<endl;
     }
 }
@@ -47,17 +48,50 @@ void lib::displaySpecificStudent() {
     cout<<"Enter Student ID to display: "<<endl;
     cin>> searchId;
 
-    for( auto s: students) {
+    for(auto s:students) {
         if (s.studentId ==searchId) {
             cout<< "Student Found:\n";
-            cout<<"ID:  "<<s.studentId <<endl;
+            cout<<"ID: "<<s.studentId <<endl;
             cout<<"Name: " <<s.studentName <<endl;
             return;
         }
     }
-
     cout<<"Student not found."<<endl;
 }
+
+void lib::modifyStudentRecord() {
+    string searchId;
+    cout<<"Enter Student ID to modify: "<<endl;
+    cin>> searchId;
+    for(auto s:students) {
+        if(s.studentId == searchId) {
+            cout<<"Enter new Student ID: ";
+            cin>>s.studentId;
+            cout<<"Enter new Student Name: ";
+            cin.ignore();
+            getline(cin, s.studentName);
+
+            cout<<"Student record modified successfully!"<<endl;
+            return;
+        }
+    }
+    cout<<"Student not found."<<endl;
+}
+
+void lib::deleteStudentRecord() {
+    string searchId;
+    cout<<"Enter Student ID to delete: ";
+    cin>>searchId;
+    auto it = remove_if(students.begin(), students.end(),[searchId](const Student& student) {
+            return student.studentId == searchId;});
+    if(it!= students.end()) {
+        students.erase(it,students.end());
+        cout<<"Student record deleted successfully!\n";
+    } else {
+        cout<<"Student not found."<<endl;
+    }
+}
+
 
 
 
@@ -76,6 +110,8 @@ int main(){
         cout<<"3-Display Specific Student Record"<<endl;
         cout<<"4-Modify Student Record"<<endl;
         cout<<"5-Delete Student Record"<<endl;
+        
+        
         cout<<"6-Display Book List" << endl;
         cout<<"7-Extract Book" << endl;
         cout<<"8-Add Book"<<endl;
@@ -104,15 +140,15 @@ int main(){
                 library.displaySpecificStudent();
                 break;
 
-            
-            /* case '4':
+            case '4':
+                library.modifyStudentRecord();
+                break;
+            case '5':
                 library.deleteStudentRecord();
                 break;
 
-            case '5':
-                library.modifyStudentRecord();
-                break;
-            case '6':
+            
+            /*case '6':
                 library.bookList();
                 break;
 
@@ -147,11 +183,11 @@ int main(){
                 break; */
 
             case '0':
-                cout << "Exiting the program. Goodbye!" << endl;
+                cout<<"Exiting the program. Goodbye!" <<endl;
                 break;
 
             default:
-                cout << "Invalid choice! Please enter a valid option." << endl;
+                cout<<"Invalid choice! Please enter a valid option." <<endl;
         }
     }
     while(choice != '0');
